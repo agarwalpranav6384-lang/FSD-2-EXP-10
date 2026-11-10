@@ -1,0 +1,7 @@
+The Library Management System (LMS) is a web-based application designed to efficiently manage library operations such as handling books, students, and borrowing activities. It provides a simple and user-friendly interface that helps in organizing data and reducing manual effort. The system allows librarians to add, update, and delete books, manage student records, and keep track of issued and returned books. It also includes a login system for both librarians and students to ensure secure access.
+
+This project is developed using HTML, CSS, and JavaScript, and it uses browser LocalStorage to store data, making it lightweight and easy to run without any external database. Users can search for books, issue them, and return them while maintaining proper records. 
+
+To run the project, simply open the index.html file in any web browser and log in using the provided credentials. The project structure is simple and consists of basic frontend files, making it easy to understand and modify. This system can be further improved by integrating a database, enhancing the user interface, and adding advanced features like fine calculation and role-based access control.
+
+This project is created for educational purposes and demonstrates the practical implementation of a basic library management system using frontend technologies.

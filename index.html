@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-shape bg-shape-a"></div>
+  <div class="bg-shape bg-shape-b"></div>
+
+  <header class="app-header">
+    <h1>Library Management System</h1>
+    <p>Track students, books, and borrowing periods in one place.</p>
+  </header>
+
+  <section class="auth-wrap" id="auth-wrap">
+    <div class="card card-wide auth-card role-picker">
+      <h2>Choose Login Type</h2>
+      <div class="role-switch">
+        <button type="button" class="btn role-btn" data-role-choice="admin">Librarian</button>
+        <button type="button" class="btn btn-secondary role-btn" data-role-choice="student">Student</button>
+      </div>
+    </div>
+
+    <div class="card auth-card hidden" id="admin-login-card">
+      <h2>Library Management Login</h2>
+      <form id="admin-login-form" class="form-grid">
+        <label>
+          Username
+          <input type="text" id="admin-username" required placeholder="e.g. librarian" />
+        </label>
+        <label>
+          Password
+          <input type="password" id="admin-password" required placeholder="Enter password" />
+        </label>
+        <button type="submit" class="btn">Login as Library</button>
+      </form>
+      <p class="auth-hint">Demo credentials: username librarian_1, password lib@123</p>
+    </div>
+
+    <div class="card auth-card hidden" id="student-login-card">
+      <h2>Student Login</h2>
+      <form id="student-login-form" class="form-grid">
+        <label>
+          Login ID (name@123)
+          <input type="text" id="student-login-id" required placeholder="e.g. pranav@101" />
+        </label>
+        <button type="submit" class="btn btn-secondary">Login as Student</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="session-bar hidden" id="session-bar">
+    <div class="session-meta">
+      <span id="session-role" class="pill"></span>
+      <span id="session-user"></span>
+    </div>
+    <button id="logout-btn" class="btn btn-secondary" type="button">Logout</button>
+  </section>
+
+  <main class="layout" id="app-shell">
+    <section class="card card-wide stats-shell">
+      <div class="section-head">
+        <h2>Live Snapshot</h2>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-tile">
+          <p id="stat-label-1" class="stat-label">Total Students</p>
+          <h3 id="stat-value-1" class="stat-value">0</h3>
+        </article>
+        <article class="stat-tile">
+          <p id="stat-label-2" class="stat-label">Total Books</p>
+          <h3 id="stat-value-2" class="stat-value">0</h3>
+        </article>
+        <article class="stat-tile">
+          <p id="stat-label-3" class="stat-label">Active Loans</p>
+          <h3 id="stat-value-3" class="stat-value">0</h3>
+        </article>
+        <article class="stat-tile">
+          <p id="stat-label-4" class="stat-label">Overdue Loans</p>
+          <h3 id="stat-value-4" class="stat-value">0</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="card card-wide admin-only" id="librarian-panel">
+      <h2>Librarian Management Panel</h2>
+      <div class="control-actions">
+        <button type="button" class="btn" data-open-target="add-student-card">Add Student</button>
+        <button type="button" class="btn" data-open-target="add-book-card">Add Book</button>
+        <button type="button" class="btn btn-secondary" data-open-target="students-manage-card">Delete Student</button>
+        <button type="button" class="btn btn-secondary" data-open-target="books-manage-card">Delete Book</button>
+      </div>
+    </section>
+
+    <section class="card card-wide admin-only hidden" id="add-student-card">
+      <h2>Add Student</h2>
+      <form id="student-form" class="form-grid">
+        <label>
+          Student Name
+          <input type="text" id="student-name" required placeholder="e.g. Aarav Sharma" />
+        </label>
+        <label>
+          Student ID
+          <input type="text" id="student-id" required placeholder="e.g. STU101" />
+        </label>
+        <button type="submit" class="btn">Add Student</button>
+      </form>
+    </section>
+
+    <section class="card card-wide admin-only hidden" id="add-book-card">
+      <h2>Add Book</h2>
+      <form id="book-form" class="form-grid">
+        <label>
+          Book Title
+          <input type="text" id="book-title" required placeholder="e.g. Database System Concepts" />
+        </label>
+        <label>
+          Author
+          <input type="text" id="book-author" required placeholder="e.g. Silberschatz" />
+        </label>
+        <label>
+          ISBN / Code
+          <input type="text" id="book-isbn" required placeholder="e.g. 9780073523323" />
+        </label>
+        <button type="submit" class="btn">Add Book</button>
+      </form>
+    </section>
+
+    <section class="card card-wide admin-only hidden" id="students-manage-card">
+      <h2>Manage Students</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Student ID</th>
+              <th>Login</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="students-manage-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card card-wide admin-only hidden" id="books-manage-card">
+      <h2>Manage Books</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>ISBN / Code</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="books-manage-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card card-wide admin-only">
+      <h2>Issue Book</h2>
+      <form id="issue-form" class="form-grid issue-grid">
+        <label>
+          Student
+          <select id="issue-student" required></select>
+        </label>
+        <label>
+          Book
+          <select id="issue-book" required></select>
+        </label>
+        <label>
+          Issue Date
+          <input type="date" id="issue-date" required />
+        </label>
+        <label>
+          Due Date
+          <input type="date" id="due-date" required />
+        </label>
+        <button type="submit" class="btn">Issue Book</button>
+      </form>
+    </section>
+
+    <section class="card card-wide">
+      <div class="section-head">
+        <h2>Active Loans</h2>
+        <input type="text" id="active-search" placeholder="Search student or book..." />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Book</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Borrowed (days)</th>
+              <th>Status</th>
+              <th id="active-action-head">Action</th>
+            </tr>
+          </thead>
+          <tbody id="active-loans-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card card-wide">
+      <div class="section-head">
+        <h2>Loan History</h2>
+        <input type="text" id="history-search" placeholder="Search student or book..." />
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Book</th>
+              <th>Issue Date</th>
+              <th>Due Date</th>
+              <th>Return Date</th>
+              <th>Total Period (days)</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <template id="empty-row-template">
+    <tr>
+      <td colspan="7" class="empty">No records found.</td>
+    </tr>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>
